@@ -2,8 +2,9 @@
 
 import { Modpack } from "@/types/modpack";
 import { Curseforge, Mod } from "node-curseforge";
+import { config } from "@/qs.config";
 
-const apiKey = "$2a$10$d67a8pjPbso9GwbI5MvxF.wUsDh8JH3wwhw4iYdDy.wpqdFAkH4Be";
+const apiKey = config.curseforge_api_key;
 
 const baseUrl = "https://api.curseforge.com";
 
@@ -47,6 +48,7 @@ export const getGames = async () => {
 export const getMods = async () => {
   const modpacks: Modpack[] = [];
 
+  console.log(apiKey);
   for (let mod in supportedModpacks) {
     const req = await fetch(baseUrl + "/v1/mods/" + supportedModpacks[mod].id, {
       method: "GET",
