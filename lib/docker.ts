@@ -24,3 +24,24 @@ export const getContainers = async () => {
     return [] as Container[];
   }
 };
+
+export const haltContainer = async (containerName:string) => {
+    const { stdout, stderr } = await command(
+        `docker stop ${containerName}`
+    );
+    console.log(stdout);
+}
+
+export const removeContainer = async (containerName:string) => {
+    const { stdout, stderr } = await command(
+        `docker rm ${containerName}`
+    );
+    console.log(stdout);
+}
+
+export const startContainer = async (containerName:string) => {
+    const { stdout, stderr } = await command(
+        `docker start ${containerName}`
+    );
+    console.log(stdout);
+}
