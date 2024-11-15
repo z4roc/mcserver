@@ -2,7 +2,14 @@
 
 import { Modpack } from "@/types/modpack";
 import { exec } from "child_process";
+import { promisify } from "util";
 
-export const deployTestModpack = (modpack: Modpack) => {
-  exec("docker run -d -it -p 25565:25565 -e EULA=TRUE itzg/minecraft-server");
+const command = promisify(exec);
+
+export const deployTestModpack = async (modpack: Modpack) => {
+  const { stdout, stderr } = await command(
+    "docker run -d -it -p 25565:25565 -e EULA=TRUE itzg/minecraft-server"
+  );
+
+  console.log(stdout);
 };
