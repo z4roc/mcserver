@@ -1,7 +1,7 @@
 "use server";
 
-import { Modpack } from "@/types/modpack";
-import { Curseforge, Mod } from "node-curseforge";
+import { Featured, Modpack } from "@/types/modpack";
+import { Curseforge, Game, Mod } from "node-curseforge";
 import { config } from "@/qs.config";
 
 const apiKey = config.curseforge_api_key;
@@ -60,4 +60,24 @@ export const getMods = async () => {
   }
 
   return modpacks;
+};
+
+export const getFeaturedModpacks = async () => {
+  const minecraft = await curseforge.get_game("minecraft");
+  const req = await fetch(baseUrl + "/v1/mods/featured", {
+    method: "POST",
+    headers: requestHeaders,
+    body: JSON.stringify({
+      gameId: minecraft.id,
+      excludedModIds: [],
+    }),
+  });
+  console.log(minecraft);
+  console.log("FEATURED");
+  const result = await req.json();
+
+  console.log(result.data.featured);
+
+  const modpacks = await minecraft.get_featured();
+  return modpacks as Featured;
 };

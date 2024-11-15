@@ -1,3 +1,5 @@
+import { Mod } from "node-curseforge";
+
 export interface Modpack {
   id: number;
   gameId: number;
@@ -121,4 +123,10 @@ export interface LatestFilesIndex {
   releaseType: number;
   gameVersionTypeId: number;
   modLoader?: number;
+}
+
+export interface Featured {
+  featured: Mod[];
+  popular: Mod[];
+  recentlyUpdated: Mod[];
 }

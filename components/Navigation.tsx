@@ -14,7 +14,7 @@ export default function AppNavBar() {
         </Link>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal gap-2 px-1">
           <li>
             <Link
               href="/instances"
