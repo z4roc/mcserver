@@ -12,4 +12,5 @@ export const deployTestModpack = async (modpack: Modpack) => {
   );
 
   console.log(stdout);
+  console.log(stderr);
 };

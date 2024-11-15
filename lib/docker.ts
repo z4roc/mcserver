@@ -17,7 +17,13 @@ export const getContainers = async () => {
       console.log(containerId);
       const cmdString = `docker inspect --format="{{json .}}" ` + containerId;
       const { stdout: containerInfo } = await command(cmdString);
-      containerInfos.push(JSON.parse(containerInfo) as Container);
+      const container = JSON.parse(containerInfo) as Container;
+
+      if (container.Config.Image.includes("itzg/minecraft-server")) {
+        containerInfos.push(container);
+        console.log(container);
+      }
+      // containerInfos.push(JSON.parse(containerInfo) as Container);
     }
     return containerInfos;
   } catch (error) {

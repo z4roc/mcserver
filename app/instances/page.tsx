@@ -6,10 +6,10 @@ export default async function page() {
   const instances = await getContainers();
 
   return (
-    <main className="max-w-[100vw] h-[calc(100vh-68px)] flex flex-col">
-      <div className="m-2 p-4">
+    <main className="max-w-[100vw] h-[calc(100vh-68px)] max-h-[calc(100vh-68px)] flex flex-col">
+      <div className="m-2 p-4 max-h-[calc(100vh-68px)]">
         <h1 className="text-lg font-bold mb-4">Instances</h1>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 overflow-y-scroll max-h-[calc(100vh-68px)]">
           {instances &&
             instances.map((instance) => {
               return <InstanceCard key={instance.Id} instance={instance} />;
