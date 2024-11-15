@@ -8,7 +8,7 @@ const command = promisify(exec);
 
 export const deployTestModpack = async (modpack: Modpack, port:number=25565) => {
   const { stdout, stderr } = await command(
-    `docker run --name mcdocker-${modpack.name} -d -it -p ${port}:25565 -e EULA=TRUE itzg/minecraft-server`
+    `docker run --env-file=.env --name mcdocker-${modpack.slug} -d -it -p ${port}:25565 -e EULA=TRUE -e TYPE=AUTO_CURSEFORGE -e CF_SLUG=${modpack.slug} itzg/minecraft-server`
   );
 
   console.log(stdout);
