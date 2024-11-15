@@ -60,7 +60,7 @@ function VanillaCard() {
           <Button
             variant="secondary"
             className="ml-auto"
-            onClick={() => deployTestModpack({} as Modpack)}
+            onClick={() => deployTestModpack({name: "vanilla"} as Modpack)}
           >
             Deploy
           </Button>
