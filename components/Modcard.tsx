@@ -2,11 +2,9 @@
 
 import { deployTestModpack } from "@/lib/deploy_modpack";
 import { Modpack } from "@/types/modpack";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, {useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
-import { Mod } from "node-curseforge";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
 import {
@@ -30,8 +28,8 @@ export function Modcard({ mod }: { mod: Modpack }) {
     deployTestModpack(mod, port, players, seed ? seed : null)
       .then(() => {
         toast({
-          title: "Mdopack deployed",
-          description: `${mod.name} has been deployed`,
+          title: `${mod.name} deployed`,
+          description: `on port ${port}`,
           variant: "default",
         });
       })
