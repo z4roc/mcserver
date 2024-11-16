@@ -18,7 +18,9 @@ export default function Home() {
             powered by Docker you can launch a Server within seconds just with
             one click
           </p>
-          <button className="btn btn-primary">Browse Modpacks</button>
+          <a className="btn btn-primary" href="/servers">
+            Browse Modpacks
+          </a>
         </div>
       </div>
     </div>

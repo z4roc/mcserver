@@ -126,7 +126,7 @@ export interface LatestFilesIndex {
 }
 
 export interface Featured {
-  featured: Mod[];
-  popular: Mod[];
-  recentlyUpdated: Mod[];
+  featured: Modpack[];
+  popular: Modpack[];
+  recentlyUpdated: Modpack[];
 }

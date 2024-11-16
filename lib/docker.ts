@@ -31,23 +31,33 @@ export const getContainers = async () => {
   }
 };
 
-export const haltContainer = async (containerName:string) => {
-    const { stdout, stderr } = await command(
-        `docker stop ${containerName}`
-    );
-    console.log(stdout);
-}
+export const getContainerById = async (containerId: string) => {
+  try {
+    const cmdString = `docker inspect --format="{{json .}}" ` + containerId;
+    const { stdout: containerInfo } = await command(cmdString);
+    return JSON.parse(containerInfo) as Container;
+  } catch (error) {
+    return {} as Container;
+  }
+};
 
-export const removeContainer = async (containerName:string) => {
-    const { stdout, stderr } = await command(
-        `docker rm ${containerName}`
-    );
-    console.log(stdout);
-}
+export const haltContainer = async (containerName: string) => {
+  const { stdout, stderr } = await command(`docker stop ${containerName}`);
+  console.log(stdout);
+};
 
-export const startContainer = async (containerName:string) => {
-    const { stdout, stderr } = await command(
-        `docker start ${containerName}`
-    );
-    console.log(stdout);
-}
+export const removeContainer = async (
+  containerName: string,
+  status: string
+) => {
+  if (status === "running") {
+    await haltContainer(containerName);
+  }
+  const { stdout, stderr } = await command(`docker rm ${containerName}`);
+  console.log(stdout);
+};
+
+export const startContainer = async (containerName: string) => {
+  const { stdout, stderr } = await command(`docker start ${containerName}`);
+  console.log(stdout);
+};

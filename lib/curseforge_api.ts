@@ -79,5 +79,5 @@ export const getFeaturedModpacks = async () => {
   console.log(result.data.featured);
 
   const modpacks = await minecraft.get_featured();
-  return modpacks as Featured;
+  return result.data as Featured;
 };

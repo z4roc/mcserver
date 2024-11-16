@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AppNavBar from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="dark bg-background text-foreground h-screen w-screen">
         <AppNavBar />
-        <div className="overflow-y-scroll flex flex-1 flex-col h-[calc(100vh-68px)]">
+        <div className="flex flex-1 flex-col overflow-x-hidden h-[calc(100vh-68px)]">
           <div className="flex flex-col flex-1">{children}</div>
           <Footer />
+          <Toaster />
         </div>
       </body>
     </html>
