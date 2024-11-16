@@ -14,6 +14,7 @@ import type { Featured, Modpack } from "@/types/modpack";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { deployTestModpack } from "@/lib/deploy_modpack";
+import { Input } from "@/components/ui/input";
 
 export default function Modpacks() {
   const [modpacks, setModpacks] = useState<Modpack[] | null>(null);
@@ -27,8 +28,9 @@ export default function Modpacks() {
     });
   }, []);
   return (
-    <main className="max-w-[100vw] h-[calc(100vh-68px)] flex flex-col">
+    <main className="flex flex-col">
       <div className="m-2 p-4">
+        <Input placeholder="Search... (not working yet)" />
         <section id="vanilla">
           <h1 className="text-lg font-bold mt-4 mb-4">Vanilla</h1>
           <VanillaCard />
@@ -36,14 +38,14 @@ export default function Modpacks() {
         <section id="modpacks">
           <h1 className="text-lg font-bold mt-4 mb-4">Modpacks</h1>
           <div className="flex flex-col gap-4">
+            <h1>Fully Supported</h1>
+            {modpacks &&
+              modpacks.map((mod) => {
+                return <Modcard mod={mod} key={mod.id} />;
+              })}
             <h1>Featured by Curseforge</h1>
             {featured &&
               featured.featured.map((mod) => {
-                return <FeaturedCard mod={mod} key={mod.id} />;
-              })}
-            <h1>Supported</h1>
-            {modpacks &&
-              modpacks.map((mod) => {
                 return <Modcard mod={mod} key={mod.id} />;
               })}
           </div>
@@ -67,9 +69,9 @@ function VanillaCard() {
           />
           <h1 className="text-2xl font-bold">{"Vanilla"}</h1>
           <Button
-            variant="secondary"
+            variant="default"
             className="ml-auto"
-            onClick={() => deployTestModpack({slug: "vanilla"} as Modpack)}
+            onClick={() => deployTestModpack({ slug: "vanilla" } as Modpack)}
           >
             Deploy
           </Button>

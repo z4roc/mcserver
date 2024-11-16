@@ -8,7 +8,9 @@ const command = promisify(exec);
 
 export const deployTestModpack = async (
   modpack: Modpack,
-  port: number = 25565
+  port: number = 25565,
+  players: number = 10,
+  seed: number | null = null
 ) => {
   console.log("Deploying", modpack.slug);
   const { stdout, stderr } = await command(
