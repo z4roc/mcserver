@@ -1,7 +1,10 @@
+"use client";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function Footer() {
-  return (
+  const pathname = usePathname();
+  return pathname == "/" ? (
     <footer className="footer bg-base-200 text-neutral-content p-10">
       <nav>
         <h6 className="footer-title">Services</h6>
@@ -24,5 +27,7 @@ export default function Footer() {
         <a className="link link-hover">Cookie policy</a>
       </nav>
     </footer>
+  ) : (
+    <></>
   );
 }
