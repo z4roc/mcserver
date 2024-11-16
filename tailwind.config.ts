@@ -1,19 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  daisyui: {
-    themes: [
-      {
-        zaroc: {
-          text: "#e1e6f9",
-          "base-100": "#0e1016",
-          primary: "#89a2eb",
-          secondary: "#5d1994",
-          accent: "#c736dd",
-        },
-      },
-    ],
-  },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -77,6 +64,5 @@ const config: Config = {
     },
   },
   darkMode: ["class", "class"],
-  plugins: [require("daisyui")],
 };
 export default config;

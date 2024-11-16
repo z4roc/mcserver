@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import InstanceCard from "@/components/InstanceCard";
 import { useInstancesStore } from "@/lib/instances";
 import { LoadingSpinner } from "@/components/Loading";
+import { Button } from "@/components/ui/button";
 
 export default function page() {
   const { instances, setInstances } = useInstancesStore();
@@ -34,9 +35,11 @@ export default function page() {
                   You dont have any instances, create one by browsing servers!
                 </p>
                 <br />
-                <a className="btn btn-primary" href="/servers">
-                  Browse Modpacks
-                </a>
+                <Button>
+                  <a className="btn btn-primary" href="/servers">
+                    Browse Modpacks
+                  </a>
+                </Button>
               </div>
             ))}
         </div>

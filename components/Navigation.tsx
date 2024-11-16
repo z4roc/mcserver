@@ -6,33 +6,34 @@ import React from "react";
 
 export default function AppNavBar() {
   return (
-    <div className="navbar bg-base-300">
-      <div className="flex-1">
-        <Link href="/" className="btn btn-ghost text-xl">
+    <nav className="flex bg-base-500 border-b-[#091637] border-b">
+      <div className="p-4">
+        <Link
+          href="/"
+          className="flex items-center gap-3 text-xl p-3 w-fit hover:bg-blue-300 rounded-md transition-opacity duration-200 hover:opacity-80"
+        >
           <Cuboid />
           <h1 className="font-bold">QuickServer</h1>
         </Link>
       </div>
-      <div className="flex-none">
-        <ul className="menu menu-horizontal gap-2 px-1">
-          <li>
-            <Link
-              href="/instances"
-              className="font-semibold text-md hover:text-blue-300 transition-opacity duration-200 hover:opacity-80"
-            >
-              Instances
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/servers"
-              className="font-semibold text-md hover:text-blue-300 transition-opacity duration-200 hover:opacity-80"
-            >
-              Browse Servers
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </div>
+      <ul className="flex items-center justify-center gap-5 px-5 ml-auto">
+        <li>
+          <Link
+            href="/instances"
+            className="font-semibold text-md  hover:bg-blue-300 rounded-md p-2 transition-opacity duration-200 hover:opacity-80 hover:text-black"
+          >
+            Instances
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/servers"
+            className="font-semibold text-md  hover:bg-blue-300 rounded-md p-2 transition-opacity duration-200 hover:opacity-80 hover:text-black"
+          >
+            Browse Servers
+          </Link>
+        </li>
+      </ul>
+    </nav>
   );
 }
