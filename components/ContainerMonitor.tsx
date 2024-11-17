@@ -2,14 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import {
-  Terminal,
   Activity,
   Box,
-  Cpu,
   Database,
   Network,
   Play,
-  Pause,
   Trash,
   Square,
 } from "lucide-react";
@@ -29,7 +26,6 @@ import {
 } from "@/lib/docker";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -38,6 +34,7 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { LoadingSpinner } from "./Loading";
+import { useRouter } from "next/navigation";
 
 export default function DockerContainerDashboard({
   containerParam,
@@ -49,6 +46,7 @@ export default function DockerContainerDashboard({
   const [container, setContainer] = useState<Container>(containerParam);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     getContainerLogsStart(container.Id.slice(0, 12)).then((log) => {
       const ansiRegex =
@@ -94,10 +92,7 @@ export default function DockerContainerDashboard({
 
   const onClickRemove = async () => {
     await removeContainer(container.Id, container.State.Status);
-    setContainer({
-      ...container,
-      State: { ...container.State, Status: "exited" },
-    });
+    router.push("/instances");
   };
 
   const port = Object.keys(container.NetworkSettings.Ports)[0];
@@ -110,7 +105,7 @@ export default function DockerContainerDashboard({
     <div className="container mx-auto p-4">
       <div className="flex gap-3">
         <h1 className="text-3xl font-bold mb-6 mr-auto ">
-          Docker Container Dashboard
+          {container.Name.slice(1)}
         </h1>
         {container.State.Status == "running" ? (
           <Button variant="secondary" onClick={onClickStop} className={"mb-4 "}>
@@ -228,44 +223,32 @@ export default function DockerContainerDashboard({
             <CardContent>
               <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Name</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {container.Name}
-                  </dd>
+                  <dt className="text-sm font-medium">Name</dt>
+                  <dd className="mt-1 text-sm ">{container.Name}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Image</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {container.Config.Image}
-                  </dd>
+                  <dt className="text-sm font-medium ">Image</dt>
+                  <dd className="mt-1 text-sm ">{container.Config.Image}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Status</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {container.State.Status}
-                  </dd>
+                  <dt className="text-sm font-medium ">Status</dt>
+                  <dd className="mt-1 text-sm ">{container.State.Status}</dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Health</dt>
-                  <dd className="mt-1 text-sm text-gray-900">
+                  <dt className="text-sm font-medium ">Health</dt>
+                  <dd className="mt-1 text-sm ">
                     {container.State.Health.Status}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    IP Address
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
+                  <dt className="text-sm font-medium ">IP Address</dt>
+                  <dd className="mt-1 text-sm ">
                     {container.NetworkSettings.IPAddress}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">
-                    Exposed Port
-                  </dt>
-                  <dd className="mt-1 text-sm text-gray-900">
-                    {info[0].HostPort}
-                  </dd>
+                  <dt className="text-sm font-medium ">Exposed Port</dt>
+                  <dd className="mt-1 text-sm ">{info[0].HostPort}</dd>
                 </div>
               </dl>
             </CardContent>

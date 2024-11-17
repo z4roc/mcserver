@@ -23,7 +23,6 @@ export const getContainers = async () => {
         containerInfos.push(container);
         console.log(container);
       }
-      // containerInfos.push(JSON.parse(containerInfo) as Container);
     }
     return containerInfos;
   } catch (error) {
