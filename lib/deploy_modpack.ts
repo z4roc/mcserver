@@ -4,6 +4,7 @@ import { Modpack } from "@/types/modpack";
 import { exec } from "child_process";
 import { memo } from "react";
 import { promisify } from "util";
+import { ImageCommandBuilder } from "./image_command";
 
 const command = promisify(exec);
 
@@ -34,9 +35,12 @@ export const deployVanilla = async (
   seed: number | null = null
 ) => {
   console.log("Deploying Vanilla");
-  const { stdout, stderr } = await command(
-    `docker run --name mcdocker-vanilla -d -it -p ${port}:25565 -e EULA=TRUE itzg/minecraft-server`
-  );
+  const commandString = ImageCommandBuilder.defaultConfig(
+    "vanilla",
+    port
+  ).build();
+  console.log(commandString);
+  const { stdout, stderr } = await command(commandString);
   console.log(stdout);
   console.log(stderr);
 
