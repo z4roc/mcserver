@@ -11,6 +11,7 @@ import {
   Play,
   Pause,
   Trash,
+  Square,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,9 @@ import {
   getContainerLogsStart,
   getContainerLogsIncremental,
   getContainerById,
+  haltContainer,
+  startContainer,
+  removeContainer,
 } from "@/lib/docker";
 
 export default function DockerContainerDashboard({
@@ -38,7 +42,6 @@ export default function DockerContainerDashboard({
         /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
       log = log.replace(ansiRegex, "");
       setLogs(log.split("\n"));
-      console.log(logRef.current);
       logRef.current?.scrollIntoView({ behavior: "smooth" });
     });
 
@@ -60,6 +63,30 @@ export default function DockerContainerDashboard({
     return () => clearInterval(interval);
   }, []);
 
+  const onClickStop = async () => {
+    await haltContainer(container.Id);
+    setContainer({
+      ...container,
+      State: { ...container.State, Status: "exited" },
+    });
+  };
+
+  const onClickStart = async () => {
+    await startContainer(container.Id);
+    setContainer({
+      ...container,
+      State: { ...container.State, Status: "running" },
+    });
+  };
+
+  const onClickRemove = async () => {
+    await removeContainer(container.Id, container.State.Status);
+    setContainer({
+      ...container,
+      State: { ...container.State, Status: "exited" },
+    });
+  };
+
   const port = Object.keys(container.NetworkSettings.Ports)[0];
 
   const info = container.NetworkSettings.Ports[port] ?? {
@@ -72,21 +99,25 @@ export default function DockerContainerDashboard({
         <h1 className="text-3xl font-bold mb-6 mr-auto ">
           Docker Container Dashboard
         </h1>
+        {container.State.Status == "running" ? (
+          <Button variant="secondary" onClick={onClickStop} className={"mb-4 "}>
+            <Square className="h-5 w-5" />
+          </Button>
+        ) : (
+          <Button
+            variant="secondary"
+            onClick={onClickStart}
+            className={"mb-4 "}
+          >
+            <Play className="h-5 w-5" />
+          </Button>
+        )}
         <Button
-          variant="default"
-          className={
-            "mb-4 " + container.State.Status == "exited" ? "block" : "hidden"
-          }
+          variant="destructive"
+          onClick={onClickRemove}
+          className={"mb-4 "}
         >
-          <Play className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="default"
-          className={
-            "mb-4 " + container.State.Status == "running" ? "block" : "hidden"
-          }
-        >
-          <Pause className="h-5 w-5" />
+          <Trash className="h-5 w-5" />
         </Button>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
