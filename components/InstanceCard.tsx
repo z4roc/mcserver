@@ -87,7 +87,7 @@ export default function InstanceCard({ instance }: { instance: Container }) {
             {isLoading ? <LoadingSpinner className="" /> : "Start"}
           </Button>
         )}
-        <Dialog open={isDialogOpen}>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button
               variant={"destructive"}

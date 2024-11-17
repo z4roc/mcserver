@@ -27,6 +27,17 @@ import {
   startContainer,
   removeContainer,
 } from "@/lib/docker";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { LoadingSpinner } from "./Loading";
 
 export default function DockerContainerDashboard({
   containerParam,
@@ -36,6 +47,8 @@ export default function DockerContainerDashboard({
   const [logs, setLogs] = useState<string[]>([]);
   const logRef = useRef<null | HTMLDivElement>(null);
   const [container, setContainer] = useState<Container>(containerParam);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     getContainerLogsStart(container.Id.slice(0, 12)).then((log) => {
       const ansiRegex =
@@ -112,13 +125,39 @@ export default function DockerContainerDashboard({
             <Play className="h-5 w-5" />
           </Button>
         )}
-        <Button
-          variant="destructive"
-          onClick={onClickRemove}
-          className={"mb-4 "}
-        >
-          <Trash className="h-5 w-5" />
-        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button
+              variant={"destructive"}
+              onClick={() => setIsDialogOpen(true)}
+            >
+              <Trash className="h-5 w-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. Are you sure you want to
+                permanently delete this container?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                type="submit"
+                variant="destructive"
+                onClick={onClickRemove}
+              >
+                {isLoading ? (
+                  <LoadingSpinner className="" />
+                ) : (
+                  "Delete permanently"
+                )}
+              </Button>
+              <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
         <Card>
