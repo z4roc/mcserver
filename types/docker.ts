@@ -231,7 +231,9 @@ export interface NetworkSettings {
   Networks: Networks;
 }
 
-export interface Ports {}
+export interface Ports {
+  [key: string]: any;
+}
 
 export interface Networks {
   bridge: Bridge;

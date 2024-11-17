@@ -2,7 +2,7 @@
 
 import { deployModpack } from "@/lib/deploy_modpack";
 import { Modpack } from "@/types/modpack";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -18,14 +18,20 @@ import {
 } from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { MemorySlider } from "./MemorySlider";
+import { useServerMemory } from "@/hooks/memory";
+import { LoadingSpinner } from "./Loading";
 
 export function Modcard({ mod }: { mod: Modpack }) {
   const { toast } = useToast();
   const [port, setPort] = useState<number>(25565);
   const [players, setPlayers] = useState<number>(10);
   const [seed, setSeed] = useState<number | null>(null);
+  const { memory } = useServerMemory();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const deploy = () => {
-    deployModpack(mod, port, players, seed ? seed : null)
+    deployModpack(mod, port, players, seed ? seed : null, memory)
       .then(() => {
         toast({
           title: `${mod.name} deployed`,
@@ -43,7 +49,7 @@ export function Modcard({ mod }: { mod: Modpack }) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <Card>
         <CardHeader>
           <div className="flex items-center gap-4">
@@ -106,10 +112,14 @@ export function Modcard({ mod }: { mod: Modpack }) {
               onChange={(e) => setSeed(parseInt(e.target.value))}
             />
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label className="text-right">Memory</Label>
+            <MemorySlider className="col-span-3" />
+          </div>
         </div>
         <DialogFooter>
           <Button type="submit" onClick={deploy}>
-            Confirm
+            {isLoading ? <LoadingSpinner className="" /> : "Confirm"}
           </Button>
         </DialogFooter>
       </DialogContent>

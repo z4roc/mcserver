@@ -23,7 +23,6 @@ export const getContainers = async () => {
         containerInfos.push(container);
         console.log(container);
       }
-      // containerInfos.push(JSON.parse(containerInfo) as Container);
     }
     return containerInfos;
   } catch (error) {
@@ -38,6 +37,36 @@ export const getContainerById = async (containerId: string) => {
     return JSON.parse(containerInfo) as Container;
   } catch (error) {
     return {} as Container;
+  }
+};
+
+export const getContainerLogsStart = async (containerId: string) => {
+  try {
+    const { stdout, stderr } = await command(
+      `docker container logs ${containerId} --since=1m`,
+      { maxBuffer: 1024 * 1024 * 10 }
+    );
+    return stdout;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+};
+
+export const getContainerLogsIncremental = async (containerId: string) => {
+  try {
+    const cmd = `docker container logs ${containerId} --since=10s`;
+    console.log(cmd);
+    const { stdout, stderr } = await command(
+      `docker container logs ${containerId} --since=2s`,
+      { maxBuffer: 1024 * 1024 * 10 }
+    );
+    console.log(stdout);
+    console.log(stderr);
+    return stdout;
+  } catch (error) {
+    console.log(error);
+    return "";
   }
 };
 

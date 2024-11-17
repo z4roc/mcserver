@@ -2,7 +2,7 @@
 import { getContainers } from "@/lib/docker";
 import React, { useEffect } from "react";
 import InstanceCard from "@/components/InstanceCard";
-import { useInstancesStore } from "@/lib/instances";
+import { useInstancesStore } from "@/hooks/instances";
 import { LoadingSpinner } from "@/components/Loading";
 import { Button } from "@/components/ui/button";
 
