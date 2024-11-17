@@ -27,8 +27,8 @@ export function Modcard({ mod }: { mod: Modpack }) {
   const [players, setPlayers] = useState<number>(10);
   const [seed, setSeed] = useState<number | null>(null);
   const { memory } = useServerMemory();
-  const deployModpack = () => {
-    deployTestModpack(mod, port, players, seed ? seed : null, memory)
+  const deploy = () => {
+    deployModpack(mod, port, players, seed ? seed : null, memory)
       .then(() => {
         toast({
           title: `${mod.name} deployed`,
