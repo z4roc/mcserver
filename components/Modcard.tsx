@@ -53,33 +53,35 @@ export function Modcard({modpack}: { modpack: Modpack }) {
                     variant: "destructive",
                 });
             });
-        };
+    };
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <Card>
                 <CardHeader>
                     <div className="flex items-center gap-4">
-                        <img
-                            src={modpack.logo.thumbnailUrl || modpack.logo.url}
-                            alt={modpack.name}
-                            className="w-16 h-16 rounded-md"
-                        />
-                        <div className="flex flex-col">
-                            <Link
-                                href={`/servers/${modpack.slug}`}
-                                className="flex items-center gap-4 hover:bg-[#1d283a] rounded-md p-2"
-                            >
+                        <Link
+                            href={`/servers/${modpack.slug}`}
+                            className="flex items-center gap-4 hover:bg-[#1d283a] rounded-md p-2"
+                        >
+                            <img
+                                src={modpack.logo.thumbnailUrl || modpack.logo.url}
+                                alt={modpack.name}
+                                className="w-16 h-16 rounded-md"
+                            />
+                            <div className="flex flex-col">
                                 <h1 className="text-2xl font-bold">{modpack.name}</h1>
-                            </Link>
-                            <p className="text-sm text-gray-500">by {modpack.authors[0]?.name || "Unknown"}</p>
-                        </div>
+                                <p className="text-sm text-gray-500">by {modpack.authors[0]?.name || "Unknown"}</p>
+                            </div>
+                        </Link>
                         <DialogTrigger asChild>
                             <Button variant="default" className="ml-auto">
                                 Deploy
                             </Button>
                         </DialogTrigger>
                     </div>
+
+
                 </CardHeader>
                 <CardContent>
                     <p>{modpack.summary}</p>
@@ -113,7 +115,7 @@ export function Modcard({modpack}: { modpack: Modpack }) {
                 </CardContent>
             </Card>
             <DialogContent>
-            <DialogHeader>
+                <DialogHeader>
                     <DialogTitle>Deploy a {modpack.name} Server</DialogTitle>
                     <DialogDescription>
                         You can configure the server settings before deploying, leave fields

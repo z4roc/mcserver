@@ -84,6 +84,8 @@ export const searchModpacks = async (query: string, game: string="minecraft") =>
     let queryParams = {
         gameId: game_obj.id.toString(),
         searchFilter: query,
+        sortOrder: "desc",
+        sortField: "2",
     }
     const req = await fetch(baseUrl + "/v1/mods/search?" + new URLSearchParams(queryParams),
         {
