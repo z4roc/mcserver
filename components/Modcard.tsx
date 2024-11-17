@@ -1,6 +1,6 @@
 "use client";
 
-import { deployTestModpack } from "@/lib/deploy_modpack";
+import { deployModpack } from "@/lib/deploy_modpack";
 import { Modpack } from "@/types/modpack";
 import React, {useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
@@ -24,8 +24,8 @@ export function Modcard({ mod }: { mod: Modpack }) {
   const [port, setPort] = useState<number>(25565);
   const [players, setPlayers] = useState<number>(10);
   const [seed, setSeed] = useState<number | null>(null);
-  const deployModpack = () => {
-    deployTestModpack(mod, port, players, seed ? seed : null)
+  const deploy = () => {
+    deployModpack(mod, port, players, seed ? seed : null)
       .then(() => {
         toast({
           title: `${mod.name} deployed`,
@@ -108,7 +108,7 @@ export function Modcard({ mod }: { mod: Modpack }) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={deployModpack}>
+          <Button type="submit" onClick={deploy}>
             Confirm
           </Button>
         </DialogFooter>
@@ -120,7 +120,7 @@ export function Modcard({ mod }: { mod: Modpack }) {
 export function FeaturedCard({ mod }: { mod: Modpack }) {
   const { toast } = useToast();
   const deployFeaturedModpack = () => {
-    deployTestModpack(mod)
+    deployModpack(mod)
       .then(() => {
         toast({
           title: "Mdopack deployed",

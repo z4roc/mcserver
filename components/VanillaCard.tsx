@@ -1,8 +1,7 @@
 import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {deployTestModpack} from "@/lib/deploy_modpack";
-import type {Modpack} from "@/types/modpack";
+import {deployVanilla} from "@/lib/deploy_modpack";
 import {useToast} from "@/hooks/use-toast";
 import React, {useState} from "react";
 import {
@@ -24,8 +23,8 @@ export function VanillaCard() {
     const [seed, setSeed] = useState<number | null>(null);
 
 
-    const deployVanilla = () => {
-        deployTestModpack({slug: "vanilla"} as Modpack, port, players, seed ? seed : null)
+    const deploy = () => {
+        deployVanilla(port, players, seed ? seed : null)
             .then(() => {
                 toast({
                     title: "Vanilla deployed",
@@ -109,7 +108,7 @@ export function VanillaCard() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={deployVanilla}>
+                    <Button type="submit" onClick={deploy}>
                         Confirm
                     </Button>
                 </DialogFooter>
