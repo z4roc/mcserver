@@ -41,6 +41,36 @@ export const getContainerById = async (containerId: string) => {
   }
 };
 
+export const getContainerLogsStart = async (containerId: string) => {
+  try {
+    const { stdout, stderr } = await command(
+      `docker container logs ${containerId} --since=1m`,
+      { maxBuffer: 1024 * 1024 * 10 }
+    );
+    return stdout;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+};
+
+export const getContainerLogsIncremental = async (containerId: string) => {
+  try {
+    const cmd = `docker container logs ${containerId} --since=10s`;
+    console.log(cmd);
+    const { stdout, stderr } = await command(
+      `docker container logs ${containerId} --since=2s`,
+      { maxBuffer: 1024 * 1024 * 10 }
+    );
+    console.log(stdout);
+    console.log(stderr);
+    return stdout;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
+};
+
 export const haltContainer = async (containerName: string) => {
   const { stdout, stderr } = await command(`docker stop ${containerName}`);
   console.log(stdout);
