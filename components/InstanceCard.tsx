@@ -21,7 +21,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { LoadingSpinner } from "./Loading";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
@@ -68,7 +67,7 @@ export default function InstanceCard({ instance }: { instance: Container }) {
             <ContainerIcon />
 
             <h1 className="text-2xl font-bold">
-              {instance.Name.replace("/", "")}
+              {instance.Name.replace("/mcdocker-", "")}
             </h1>
           </Link>
           <Dot status={instance.State.Status} />
