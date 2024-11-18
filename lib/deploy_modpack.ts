@@ -5,6 +5,7 @@ import { exec } from "child_process";
 import { memo } from "react";
 import { promisify } from "util";
 import { ImageCommandBuilder } from "./image_command";
+import "./generate-env"
 
 const command = promisify(exec);
 
