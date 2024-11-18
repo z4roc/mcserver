@@ -3,6 +3,7 @@
 import { Container } from "@/types/docker";
 import { exec } from "child_process";
 import { promisify } from "util";
+import path from "node:path";
 
 const command = promisify(exec);
 export const getContainers = async () => {
@@ -89,4 +90,18 @@ export const removeContainer = async (
 export const startContainer = async (containerName: string) => {
   const { stdout, stderr } = await command(`docker start ${containerName}`);
   console.log(stdout);
+};
+
+export const copyWorldFromContainer = async (
+    containerId: string,
+    localPath: string = '/tmp',
+) => {
+  while (localPath.endsWith('/')) {
+    localPath = localPath.substring(0, localPath.lastIndexOf('/'));
+  }
+  await command(`docker exec ${containerId} tar czf /tmp/world.tgz world`);
+  const outputPath = path.join(localPath, `${containerId}-world.tgz`);
+  await command(`docker cp ${containerId}:/tmp/world.tgz ${outputPath}`);
+
+  return outputPath; // Return the server-side path
 };

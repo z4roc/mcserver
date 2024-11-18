@@ -9,6 +9,8 @@ import {
   Play,
   Trash,
   Square,
+  Download,
+  Earth
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +49,7 @@ export default function DockerContainerDashboard({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
   useEffect(() => {
     getContainerLogsStart(container.Id.slice(0, 12)).then((log) => {
       const ansiRegex =
@@ -73,6 +76,33 @@ export default function DockerContainerDashboard({
 
     return () => clearInterval(interval);
   }, []);
+
+  const onClickDownloadWorld = async () => {
+    try {
+      const response = await fetch(`/api/download-world?containerId=${container.Id}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to download the world file.');
+      }
+
+      // Convert the response into a Blob
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      // Create a download link
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `world.tgz`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Revoke the object URL to free memory
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading the world file:', error);
+    }
+  };
 
   const onClickStop = async () => {
     await haltContainer(container.Id);
@@ -107,8 +137,22 @@ export default function DockerContainerDashboard({
         <h1 className="text-3xl font-bold mb-6 mr-auto ">
           {container.Name.slice(1)}
         </h1>
+        <Button
+            variant="secondary"
+            onClick={onClickDownloadWorld}
+            className="mb-4"
+            title="Download the world file"
+        >
+          <Download className="h-5 w-5" />
+          <Earth className="h-5 w-5" />
+        </Button>
         {container.State.Status == "running" ? (
-          <Button variant="secondary" onClick={onClickStop} className={"mb-4 "}>
+          <Button
+            variant="secondary"
+            onClick={onClickStop}
+            className={"mb-4 "}
+            title="Stop the server"
+          >
             <Square className="h-5 w-5" />
           </Button>
         ) : (
@@ -116,6 +160,7 @@ export default function DockerContainerDashboard({
             variant="secondary"
             onClick={onClickStart}
             className={"mb-4 "}
+            title="Start the server"
           >
             <Play className="h-5 w-5" />
           </Button>
@@ -125,6 +170,7 @@ export default function DockerContainerDashboard({
             <Button
               variant={"destructive"}
               onClick={() => setIsDialogOpen(true)}
+              title="Permanently delete the server"
             >
               <Trash className="h-5 w-5" />
             </Button>
