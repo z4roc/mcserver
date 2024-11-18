@@ -81,6 +81,7 @@ export const getFeaturedModpacks = async (game: string="minecraft") => {
 
 export const searchModpacks = async (query: string, game: string="minecraft") => {
     const game_obj = await curseforge.get_game(game);
+    console.log(`Searching for: ${query}`);
     let queryParams = {
         gameId: game_obj.id.toString(),
         searchFilter: query,
