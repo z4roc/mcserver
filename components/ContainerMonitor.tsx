@@ -41,8 +41,8 @@ import { useRouter } from "next/navigation";
 import {Input} from "@/components/ui/input";
 
 export default function DockerContainerDashboard({
-  containerParam,
-}: {
+                                                   containerParam,
+                                                 }: {
   containerParam: Container;
 }) {
   const [logs, setLogs] = useState<string[]>([]);
@@ -126,7 +126,8 @@ export default function DockerContainerDashboard({
     setIsLoading(true);
     try {
       const result: string = await executeMcCommand(container.Id, minecraftCommand);
-      setCommandResult(result.toString().substring(0, result.length - 6));
+      const formattedResult = result.trim().replace(/\x1b\[[0-9;]*m/g, "");
+      setCommandResult(formattedResult);
       setMinecraftCommand(""); // Clear input field after execution
     } catch (error) {
       setCommandResult(`Error executing command: ${error}`);
@@ -162,6 +163,11 @@ export default function DockerContainerDashboard({
   const info = container.NetworkSettings.Ports[port] ?? {
     [0]: { HostPort: 0 },
   };
+
+  function switchTab(tab: string) {
+    setActiveTab(tab);
+    setCommandResult(null);
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -288,7 +294,7 @@ export default function DockerContainerDashboard({
           </CardContent>
         </Card>
       </div>
-      <Tabs defaultValue="info" className="space-y-4" onValueChange={setActiveTab}>
+      <Tabs defaultValue="info" className="space-y-4" onValueChange={switchTab}>
         <TabsList>
           <TabsTrigger value="info">Container Info</TabsTrigger>
           <TabsTrigger value="logs">Logs</TabsTrigger>
@@ -371,7 +377,7 @@ export default function DockerContainerDashboard({
                   {commandResult !== null && (
                       <div>
                           <p className="font-semibold">Command Result:</p>
-                          <p className="text-gray-700">{commandResult}</p>
+                          <p className="text-gray-700 whitespace-pre-wrap">{commandResult}</p>
                       </div>
                   )}
               </div>
